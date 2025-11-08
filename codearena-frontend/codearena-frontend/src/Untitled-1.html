@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ER Diagram - CodeArena</title>
+</head>
+<body style="background:#fafafa;font-family:Arial;text-align:center;">
+  <h2>Entity Relationship Diagram - CodeArena</h2>
+
+  <img id="uml" alt="ER Diagram will load here..." />
+
+  <script type="text/plain" id="plantuml-code">
+@startuml
+skinparam linetype ortho
+
+'===== USER ENTITY =====
+entity "USER" as USER
+usecase "user_id" as user_id
+usecase "email" as email
+usecase "username" as username
+usecase "password" as password
+usecase "user_type" as user_type
+
+USER -- user_id
+USER -- email
+USER -- username
+USER -- password
+USER -- user_type
+
+
+'===== CONTEST ENTITY =====
+entity "CONTEST" as CONTEST
+usecase "contest_id" as contest_id
+usecase "title" as title
+usecase "start_time" as start_time
+usecase "end_time" as end_time
+usecase "status" as status
+
+CONTEST -- contest_id
+CONTEST -- title
+CONTEST -- start_time
+CONTEST -- end_time
+CONTEST -- status
+
+
+'===== PROBLEM ENTITY =====
+entity "PROBLEM" as PROBLEM
+usecase "problem_id" as problem_id
+usecase "problem_title" as problem_title
+usecase "difficulty" as difficulty
+usecase "time_limit" as time_limit
+usecase "memory_limit" as memory_limit
+
+PROBLEM -- problem_id
+PROBLEM -- problem_title
+PROBLEM -- difficulty
+PROBLEM -- time_limit
+PROBLEM -- memory_limit
+
+
+'===== SUBMISSION ENTITY =====
+entity "SUBMISSION" as SUBMISSION
+usecase "submission_id" as submission_id
+usecase "language" as language
+usecase "sub_status" as sub_status
+usecase "exec_time" as exec_time
+usecase "score" as score
+
+SUBMISSION -- submission_id
+SUBMISSION -- language
+SUBMISSION -- sub_status
+SUBMISSION -- exec_time
+SUBMISSION -- score
+
+
+'===== TEST_CASE ENTITY =====
+entity "TEST_CASE" as TEST_CASE
+usecase "testcase_id" as testcase_id
+usecase "input_data" as input_data
+usecase "expected_out" as expected_out
+usecase "is_sample" as is_sample
+
+TEST_CASE -- testcase_id
+TEST_CASE -- input_data
+TEST_CASE -- expected_out
+TEST_CASE -- is_sample
+
+
+'===== RELATIONSHIPS =====
+diamond "creates" as creates
+diamond "participates_in" as participates_in
+diamond "submits" as submits
+diamond "contains" as contains
+diamond "has_test" as has_test
+diamond "judged_by" as judged_by
+
+USER -- creates
+creates -- CONTEST
+
+USER -- participates_in
+participates_in -- CONTEST
+
+USER -- submits
+submits -- SUBMISSION
+
+CONTEST -- contains
+contains -- PROBLEM
+
+PROBLEM -- has_test
+has_test -- TEST_CASE
+
+SUBMISSION -- judged_by
+judged_by -- TEST_CASE
+@enduml
+  </script>
+
+  <script>
+    function encode64(data) {
+      const r = btoa(unescape(encodeURIComponent(data)))
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_');
+      return r;
+    }
+
+    const umlText = document.getElementById("plantuml-code").innerText;
+    const encoded = encode64(umlText);
+    const imgUrl = "https://www.plantuml.com/plantuml/png/" + encoded;
+    document.getElementById("uml").src = imgUrl;
+  </script>
+</body>
+</html>
